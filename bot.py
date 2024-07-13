@@ -42,7 +42,7 @@ async def on_message(message: Message) -> None:
         case "server log":
             logging.info(f"Send Server Log file to {message.author}")
             await message.channel.send("Server Log File: ")
-            await message.channel.send(file=File(SERVER_LOG_LOCATIONj))
+            await message.channel.send(file=File(SERVER_LOG_LOCATION))
         case _:
             await message.channel.send(f"{file_type} is invalid $get command")
             await message.channel.send("Try: '$get world' or '$get log'")
