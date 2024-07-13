@@ -4,10 +4,12 @@ import logging
 
 import settings
 
-logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO)
-
 TOKEN = settings.TOKEN
 WORLD_LOCATION = settings.WORLD_LOCATION
+BOT_LOG_LOCATION = settings.BOT_LOG_LOCATION
+
+logging.basicConfig(filename=BOT_LOG_LOCATION, filemode="a", format='%(asctime)s - %(message)s', level=logging.INFO)
+
 
 intents = Intents.default()
 intents.message_content = True
