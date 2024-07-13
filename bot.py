@@ -7,6 +7,7 @@ import settings
 TOKEN = settings.TOKEN
 WORLD_LOCATION = settings.WORLD_LOCATION
 BOT_LOG_LOCATION = settings.BOT_LOG_LOCATION
+SERVER_LOG_LOCATION = settings.SERVER_LOG_LOCATION
 
 logging.basicConfig(filename=BOT_LOG_LOCATION, filemode="a", format='%(asctime)s - %(message)s', level=logging.INFO)
 
@@ -34,9 +35,14 @@ async def on_message(message: Message) -> None:
             await message.channel.send("Server World File: ")
             await message.channel.send(file=File(WORLD_LOCATION))
             logging.info(f"Sent World file to {message.author}")
-        case "log":
-            await message.channel.send("server log file: ")
-            logging.info(f"Sent Log file to {message.author}")
+        case "bot log":
+            logging.info(f"Sent Bot Log file to {message.author}")
+            await message.channel.send("Bot Log File: ")
+            await message.channel.send(file=File(BOT_LOG_LOCATION))
+        case "server log":
+            logging.info(f"Send Server Log file to {message.author}")
+            await message.channel.send("Server Log File: ")
+            await message.channel.send(file=File(SERVER_LOG_LOCATIONj))
         case _:
             await message.channel.send(f"{file_type} is invalid $get command")
             await message.channel.send("Try: '$get world' or '$get log'")
