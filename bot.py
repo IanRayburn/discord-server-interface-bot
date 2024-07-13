@@ -13,6 +13,12 @@ intents = Intents.default()
 intents.message_content = True
 client = Client(intents=intents)
 
+# Log start up
+@client.event
+async def on_ready() -> None:
+    logging.info("Starting up")
+
+
 # Check message and preform requested command
 @client.event
 async def on_message(message: Message) -> None:
