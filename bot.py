@@ -46,16 +46,23 @@ async def on_message(message: Message) -> None:
             await message.channel.send("Server World File: ")
             await message.channel.send(file=File(WORLD_LOCATION))
             logging.info(f"Sent World file to {message.author}")
+
         case "bot log":
             logging.info(f"Sent Bot Log file to {message.author}")
             await message.channel.send("Bot Log File: ")
             await message.channel.send(file=File(BOT_LOG_LOCATION))
+
         case "server log":
-            logging.info(f"Send Server Log file to {message.author}")
-            await message.channel.send("Server Log File: ")
-            await message.channel.send(file=File(SERVER_LOG_LOCATION))
+            if SERVER_LOG_ON:
+                logging.info(f"Send Server Log file to {message.author}")
+                await message.channel.send("Server Log File: ")
+                await message.channel.send(file=File(SERVER_LOG_LOCATION))
+            else:
+                await message.channel.send("Server log access is not activated")
+
         case "help":
             await message.channel.send(helper_message)
+
         case _:
             await message.channel.send(f"{file_type} is invalid $get command")
             await message.channel.send(helper_message)
