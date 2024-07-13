@@ -7,7 +7,7 @@ import settings
 TOKEN = settings.TOKEN
 WORLD_LOCATION = settings.WORLD_LOCATION
 BOT_LOG_LOCATION = settings.BOT_LOG_LOCATION
-SERVER_LOG_LOCATION = settings.SERVER_LOG_LOCATION
+SERVER_LOG_ON = settings.SERVER_LOG_ON
 
 logging.basicConfig(filename=BOT_LOG_LOCATION, filemode="a", format='%(asctime)s - %(message)s', level=logging.INFO)
 
@@ -16,7 +16,11 @@ intents = Intents.default()
 intents.message_content = True
 client = Client(intents=intents)
 
-helper_message = "Get World File: '$get world'\nGet Bot Logs: '$get bot log'\nGet Server Logs: '$get server log'"
+helper_message = "Get World File: '$get world'\nGet Bot Logs: '$get bot log'"
+
+if SERVER_LOG_ON:
+    SERVER_LOG_LOCATION = settings.SERVER_LOG_LOCATION
+    helper_message = helper_message + "\nGet Server Logs: '$get server log'"
 
 # Log start up
 @client.event
