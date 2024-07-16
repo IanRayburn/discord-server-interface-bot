@@ -36,9 +36,14 @@ async def on_message(message: Message) -> None:
     if message.content[:5] == "$get ":
         file_location, file_type = get_file(message.content)
         try:
+            logging.info(f"Trying to send file to {message.author}")
             await message.channel.send(f"{file_type}: ")
             await message.channel.send(file=File(file_location))
+            logging.info(f"Sent {file_type} to {message.author}")
         except FileNotFoundError:
+            logging.info(
+                f"Could not send file to {message.author}, Error type: {file_location}"
+                         )
             await message.channel.send(file_location)
             await message.channel.send(helper_message)
 
