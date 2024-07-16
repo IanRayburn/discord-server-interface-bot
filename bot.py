@@ -13,6 +13,7 @@ logging.basicConfig(filename=BOT_LOG_LOCATION, filemode="a", format='%(asctime)s
 
 intents = Intents.default()
 intents.message_content = True
+intents.members = True
 client = Client(intents=intents)
 
 helper_message = "Get World File: '$get world'\nGet Bot Logs: '$get bot log'"
@@ -24,9 +25,10 @@ async def on_ready() -> None:
 
 # Introduce commands to new user
 @client.event
-async def on_member_join(member: Member):
+async def on_member_join(member: Member) -> None:
     logging.info(f"{member.name} joined")
-    member.send(helper_message) 
+    await member.send(f"Commands:\n{helper_message}")
+    await member.send("Send $help to get this message again.")
 
 # Check message and preform requested command
 @client.event
