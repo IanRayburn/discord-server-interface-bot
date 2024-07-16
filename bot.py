@@ -35,13 +35,13 @@ async def on_message(message: Message) -> None:
 
     if message.content[:5] == "$get ":
         file_location, file_type = get_file(message.content)
-        match file_type:
-            case "Unkown File Type":
-                await message.channel.send(file_location)
-                await message.channel.send(helper_message)
-            case _:
-                await message.channel.send(f"{file_type} File: ")
-                await message.channel.send(file=File(file_location))
+        try:
+            await message.channel.send(f"{file_type}: ")
+            await message.channel.send(file=File(file_location))
+        except FileNotFoundError:
+            await message.channel.send(file_location)
+            await message.channel.send(helper_message)
+
     elif message.content == "$help":
         await message.channel.send(helper_message)
 

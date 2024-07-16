@@ -10,14 +10,14 @@ def get_file(get_command: str) -> str:
     file_type: str = get_command[5:].lower()
     match file_type:
         case "world":
-            return WORLD_LOCATION, file_type.title()
+            return WORLD_LOCATION, f"{file_type.title()} File"
 
         case "bot log":
-            return BOT_LOG_LOCATION, file_type.title()
+            return BOT_LOG_LOCATION, f"{file_type.title()} File"
 
         case "server log":
             if SERVER_LOG_ON:
-                return SERVER_LOG_LOCATION, file_type.title()
+                return SERVER_LOG_LOCATION, f"{file_type.title()} File"
             else:
                 return "Server log access is not activated", "Unknow File Type"  
 
