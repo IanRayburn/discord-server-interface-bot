@@ -2,12 +2,11 @@ import os
 from discord import Intents, Client, Message, File, Member
 import logging
 
+from responce_methods import get_file
 import settings
 
 TOKEN = settings.TOKEN
-WORLD_LOCATION = settings.WORLD_LOCATION
 BOT_LOG_LOCATION = settings.BOT_LOG_LOCATION
-SERVER_LOG_ON = settings.SERVER_LOG_ON
 
 logging.basicConfig(filename=BOT_LOG_LOCATION, filemode="a", format='%(asctime)s - %(message)s', level=logging.INFO)
 
@@ -17,10 +16,6 @@ intents.message_content = True
 client = Client(intents=intents)
 
 helper_message = "Get World File: '$get world'\nGet Bot Logs: '$get bot log'"
-
-if SERVER_LOG_ON:
-    SERVER_LOG_LOCATION = settings.SERVER_LOG_LOCATION
-    helper_message = helper_message + "\nGet Server Logs: '$get server log'"
 
 # Log start up
 @client.event
@@ -36,11 +31,25 @@ async def on_member_join(member: Member):
 # Check message and preform requested command
 @client.event
 async def on_message(message: Message) -> None:
-    if message.content[:5] == "$get ":
-        file_type: str = message.content[5:]
-    else:
-        return
+    if message.author == client.user : return
 
+    if message.content[:5] == "$get ":
+        file_location, file_type = get_file(message.content)
+        match file_type:
+            case "Unkown File Type":
+                await message.channel.send(file_location)
+                await message.channel.send(helper_message)
+            case "Server log off":
+                await message.channel.send(file_location)
+                await message.channel.send(helper_message)
+            case _:
+                await message.channel.send(f"{file_type} File: ")
+                await message.channel.send(file=File(file_location))
+    elif message.content == "$help":
+        await message.channel.send(helper_message)
+    
+
+'''
     match file_type:
         case "world": 
             await message.channel.send("Server World File: ")
@@ -62,10 +71,11 @@ async def on_message(message: Message) -> None:
 
         case "help":
             await message.channel.send(helper_message)
-
+        
         case _:
             await message.channel.send(f"{file_type} is invalid $get command")
             await message.channel.send(helper_message)
+'''
 
 def main() -> None:
     client.run(token=TOKEN)
