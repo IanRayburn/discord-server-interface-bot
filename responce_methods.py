@@ -19,7 +19,7 @@ def get_file(get_command: str) -> str:
             if SERVER_LOG_ON:
                 return SERVER_LOG_LOCATION, file_type.title()
             else:
-                return "Server log access is not activated", "Server log off"  
+                return "Server log access is not activated", "Unknow File Type"  
 
         case _:
             return f"{file_type} is invalid $get command", "Unknow File Type"
