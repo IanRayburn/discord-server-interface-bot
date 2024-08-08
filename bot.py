@@ -18,7 +18,7 @@ intents.message_content = True
 intents.members = True
 client = Client(intents=intents)
 
-helper_message = "Get World File: '$get world'\nGet Bot Logs: '$get bot log'"
+helper_message = "Get World File: '$get world'\nGet Bot Logs: '$get bot log'\nRun Server: $run"
 
 # Log start up
 @client.event
@@ -56,9 +56,13 @@ async def on_message(message: Message) -> None:
 
     elif message.content == "$run":
         if SERVER_START_FILE_ON:
-            system(f"./{SERVER_START_FILE}")
-            await message.channel.send("Successfully ran server")
-            logging.info(f"{message.author} successfully ran server file")
+            start_responce = system(f"./{SERVER_START_FILE}")
+            if start_responce == 0:
+                await message.channel.send("Successfully ran server")
+                logging.info(f"{message.author} successfully ran server file")
+            else:
+                await message.channel.send("Could not start server\nCheck server logs: '$get server log'")
+                logging.info(f"{message.author} could not run server")
         else:
             await message.channel.send("Running server file is not activated")
 
