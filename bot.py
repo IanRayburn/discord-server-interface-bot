@@ -1,4 +1,4 @@
-import os
+from os import system
 from discord import Intents, Client, Message, File, Member
 import logging
 
@@ -7,6 +7,8 @@ import settings
 
 TOKEN = settings.TOKEN
 BOT_LOG_LOCATION = settings.BOT_LOG_LOCATION
+SERVER_START_FILE = settings.SERVER_START_FILE
+SERVER_START_FILE_ON = settings.SERVER_START_FILE_ON
 
 logging.basicConfig(filename=BOT_LOG_LOCATION, filemode="a", format='%(asctime)s - %(message)s', level=logging.INFO)
 
@@ -51,6 +53,14 @@ async def on_message(message: Message) -> None:
 
     elif message.content == "$help":
         await message.channel.send(helper_message)
+
+    elif message.content == "$run":
+        if SERVER_START_FILE_ON:
+            system(f"./{SERVER_START_FILE}")
+            await message.channel.send("Successfully ran server")
+            logging.info(f"{message.author} successfully ran server file")
+        else:
+            await message.channel.send("Running server file is not activated")
 
 def main() -> None:
     client.run(token=TOKEN)
